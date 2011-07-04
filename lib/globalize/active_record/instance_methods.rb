@@ -48,9 +48,9 @@ module Globalize
         end
         
         locale = options[:locale]
-
+        puts locale
         options = {:translated => true, :locale => nil}.merge(options)
-        if self.class.translated?(name) and options[:translated] and locale != I18n.default_locale
+        if self.class.translated?(name) and options[:translated] and locale.to_s != I18n.default_locale.to_s
           globalize.fetch(options[:locale] || Globalize.locale, name)
         else
           super(name)
