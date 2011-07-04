@@ -26,7 +26,7 @@ module Globalize
       def write_attribute(name, value, options = {})
         # raise 'y' if value.nil? # TODO.
 
-        if translated?(name)
+        if translated?(name) and Globalize.locale.to_s != I18n.default_locale.to_s
           # Deprecate old use of locale
           unless options.is_a?(Hash)
             warn "[DEPRECATION] passing 'locale' as #{options.inspect} is deprecated. Please use {:locale => #{options.inspect}} instead."
@@ -66,7 +66,7 @@ module Globalize
 
       def translated_attributes
         translated_attribute_names.inject({}) do |attributes, name|
-          attributes.merge(name.to_s => translation.send(name)) if Globalize.locale != I18n.default_locale
+          attributes.merge(name.to_s => translation.send(name)) 
         end
       end
 
