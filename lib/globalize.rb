@@ -36,6 +36,10 @@ module Globalize
     def fallbacks(locale = self.locale)
       fallbacks? ? I18n.fallbacks[locale] : [locale.to_sym]
     end
+    
+    def ignore_translation_for_default_language?
+      I18n.respond_to?(:ignore_translation_for_default_language)
+    end
 
   protected
 

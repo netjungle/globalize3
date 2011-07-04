@@ -21,7 +21,12 @@ module Globalize
 
       def fetch(locale, name)
         Globalize.fallbacks(locale).each do |fallback|
-          value = fetch_stash(fallback, name) || fetch_attribute(fallback, name)
+          if Globalize.ignore_translation_for_default_language? and locale.to_s == I18n.default_locale.to_s
+            value = record.attributes[name]
+          else
+            value = fetch_stash(fallback, name) || fetch_attribute(fallback, name)
+          end  
+          
 
           unless fallbacks_for?(value)
             set_metadata(value, :locale => fallback, :requested_locale => locale)
