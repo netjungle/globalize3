@@ -46,6 +46,8 @@ module Globalize
           warn "[DEPRECATION] passing 'locale' as #{options.inspect} is deprecated. Please use {:locale => #{options.inspect}} instead."
           options = {:locale => options}
         end
+        
+        locale = options[:locale]
 
         options = {:translated => true, :locale => nil}.merge(options)
         if self.class.translated?(name) and options[:translated] and locale != I18n.default_locale
