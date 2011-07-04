@@ -51,7 +51,8 @@ module Globalize
         if self.class.translated?(name) and options[:translated]
           globalize.fetch(options[:locale] || Globalize.locale, name)
         else
-          super(name)
+          name
+          #super(name)
         end
       end
 
