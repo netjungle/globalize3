@@ -21,13 +21,7 @@ module Globalize
 
       def fetch(locale, name)
         Globalize.fallbacks(locale).each do |fallback|
-          if locale.to_s == I18n.default_locale.to_s
-            value = record.attributes[name]
-          else
             value = fetch_stash(fallback, name) || fetch_attribute(fallback, name)
-          end  
-          
-
           unless fallbacks_for?(value)
             set_metadata(value, :locale => fallback, :requested_locale => locale)
             return value
@@ -42,9 +36,11 @@ module Globalize
 
       def save_translations!
         stash.each do |locale, attrs|
-          translation = record.translations.find_or_initialize_by_locale(locale.to_s)
-          attrs.each { |name, value| translation[name] = value }
-          translation.save!
+          if locale != I18n.default_locale
+            translation = record.translations.find_or_initialize_by_locale(locale.to_s)
+            attrs.each { |name, value| translation[name] = value }
+            translation.save!
+          end
         end
         record.translations.reset
         stash.clear
