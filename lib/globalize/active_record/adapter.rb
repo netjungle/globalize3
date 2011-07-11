@@ -20,9 +20,8 @@ module Globalize
       end
 
       def fetch(locale, name)
-        return nil if locale.to_s == I18n.default_locale.to_s
         Globalize.fallbacks(locale).each do |fallback|
-            value = fetch_stash(fallback, name) || fetch_attribute(fallback, name)
+            value = fallback.to_s != I18n.default_locale.to_s ? (fetch_stash(fallback, name) || fetch_attribute(fallback, name)) : nil
           unless fallbacks_for?(value)
             set_metadata(value, :locale => fallback, :requested_locale => locale)
             return value
