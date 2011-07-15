@@ -38,7 +38,7 @@ module Globalize
         stash.each do |locale, attrs|
           translation = record.translations.find_or_initialize_by_locale(locale.to_s)
           attrs.each { |name, value| translation[name] = value }
-          translation.save!
+          translation.save! if locale.to_s != I18n.default_locale.to_s
         end
         record.translations.reset
         stash.clear
